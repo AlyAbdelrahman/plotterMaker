@@ -1,9 +1,10 @@
+import ChartMaker from './containers/chartMaker/ChartMaker';
 
 function App() {
   return (
-    <div className="App">
-     <h1>Hello World</h1>
-    </div>
+      <div className="App" data-test='component-app'>
+        <ChartMaker data-test='component-chart-maker'/>
+      </div>
   );
 }
 
