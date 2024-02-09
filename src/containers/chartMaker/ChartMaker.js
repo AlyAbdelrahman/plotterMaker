@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import plotDataService from '../../services/mainDataColumn-service';
+import DataColumn from '../dataColumn/DataColumn';
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
@@ -18,13 +19,8 @@ export default function ChartMaker() {
     
     return (
         <div className="chartMakerContainer">
-            {orginalColumnData.length > 0 && (
-                <ul>
-                    {orginalColumnData.map((item, index) => {
-                        return <li key={index}>{item.name}</li>;
-                    })}
-                </ul>
-            )}
+            <DataColumn orginalColumnDataList={orginalColumnData}/>
+            
         </div>
     );
     
