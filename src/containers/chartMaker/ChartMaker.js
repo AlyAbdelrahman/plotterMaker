@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react'
 import plotDataService from '../../services/mainDataColumn-service';
 import DataColumn from '../dataColumn/DataColumn';
 import DataAxes from '../dataAxes/DataAxes';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { sortList } from '../../utils/utils';
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
-    const [dimensionData, setDimensionData] = useState([]);
-    const [measureData, setMeasureData] = useState([]);
+    const [dimensionColumns, setDimensionColumns] = useState([]);
+    const [measureColumns, setMeasureColumns] = useState([]);
+
 
     useEffect(() => {
-        // Separate columnsTestData based on the function property
-        const dimensionColumns = orginalColumnData.filter(item => item.function === 'dimension');
-        const measureColumns = orginalColumnData.filter(item => item.function === 'measure');
-        
-        setDimensionData(dimensionColumns);
-        setMeasureData(measureColumns);
+        // Filter dimension and measure columns when orginalColumnData changes
+        const dimensionCols = orginalColumnData.filter(item => item.function === 'dimension');
+        const measureCols = orginalColumnData.filter(item => item.function === 'measure');
+        setDimensionColumns(dimensionCols);
+        setMeasureColumns(measureCols);
     }, [orginalColumnData]);
+
+
 
     const fetchChartColumnData = () => {
         return plotDataService.getCoulmnData().then(data => {
@@ -26,13 +30,32 @@ export default function ChartMaker() {
 
     useEffect(() => {
         fetchChartColumnData();
-    },[])
+    }, [])
 
-    
+    const handleColumnDataOnDragEnd = (result) => {
+        let sourceList = result.draggableId.startsWith('draggable-dimension') ? dimensionColumns : measureColumns;
+        const startIndex = result.source.index;
+        const endIndex = result.destination.index;
+        const newSortedList = sortList(sourceList, startIndex, endIndex);
+        // Update the state based on the type of column
+        if (result.draggableId.startsWith('draggable-dimension')) {
+            setDimensionColumns(newSortedList);
+        } else {
+            setMeasureColumns(newSortedList);
+        }
+    }
+    const handleDragEnd = (result) => {
+        if (!result.destination) return; // If dropped outside the list
+        if (result.draggableId.startsWith('draggable-dimension') || result.draggableId.startsWith('draggable-measure')) return handleColumnDataOnDragEnd(result);
+
+    };
+
     return (
         <div className="chartMakerContainer">
-            <DataColumn orginalColumnDataList={orginalColumnData}  />
+            <DragDropContext onDragEnd={handleDragEnd}>
+                <DataColumn orginalColumnDataList={orginalColumnData} dimensionColumns={dimensionColumns} measureColumns={measureColumns} />
+            </DragDropContext>
         </div>
     );
-    
+
 }
