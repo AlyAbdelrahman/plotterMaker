@@ -50,6 +50,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
     };
 
     const options = {
+        responsive: true,
         legend: {
             position: "left",
             labels: {
@@ -96,7 +97,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
     };
 
     return (
-        <div className="chart-box">
+        <div className="chart-box" style={{display:'flex',justifyContent:'center' ,width:'100%',height:'500px'}}>
             <Line options={options} data={data} />
         </div>
     );

@@ -1,0 +1,17 @@
+.snackBarContainer{
+    display: flex;
+    position: absolute;
+    width: 18rem;
+    height: 3rem;
+    color: white;
+    background: black;
+    right: 1rem;
+    justify-content: center;
+    align-items: center;
+    bottom: 1rem;
+    button{
+        background: transparent;
+        color: wheat;
+        margin-left: 1rem;
+    }
+}

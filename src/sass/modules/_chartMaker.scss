@@ -1,0 +1,37 @@
+.chartMakerContainer {
+    width: 100%;
+    display: flex;
+}
+
+.chartDataColumnContainer {
+    width: 15%;
+    background-color: $greyDark;
+    height: 100vh;
+}
+.categoryHeader {
+    background-color: black;
+    color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.draggableCategory {
+    padding: 0.3rem;
+    margin-bottom: 0.3rem;
+    &--toDrop{
+        width: fit-content;
+        padding: 16px;
+        height: 2.9rem;
+        color: white;
+        background-color: #263B4A;
+        border-radius: 1rem;
+    }
+}
+.chartAxes {
+    width: 100%;
+}
+.axesContainer {
+    width: 100%;
+}
+.chartBoxMakerContainer {
+    width: 85%;
+}

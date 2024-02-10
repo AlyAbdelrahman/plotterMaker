@@ -110,7 +110,6 @@ export default function ChartMaker() {
     }
     return (
         <div className="chartMakerContainer" >
-
             <div className='chartDataColumnContainer'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <DataColumn
@@ -138,21 +137,24 @@ export default function ChartMaker() {
                     />
                 </DragDropContext>
             </div>
-            <div className="axesContainer">
-                <Axes ref={measureAxesRef} />
-                <Axes ref={dimensionAxesRef} />
+            <div className='chartBoxMakerContainer'>
+                <div className="axesContainer">
+                    <Axes ref={measureAxesRef} />
+                    <Axes ref={dimensionAxesRef} />
+                </div>
+                <div className='' style={{ width: '100%', }}>
+                    {(measueAxesData && dimensionAxesData) && <ChartBuilder
+                        xAxesLabel={measueAxesData}
+                        yAxesLabel={dimensionAxesData}
+                        chartRequestedData={{
+                            measures: ["Cost"],
+                            dimension: "Product"
+                        }}
+                    />
+                    }
+                </div>
             </div>
-            <div className='' style={{ width: '100%', }}>
-                {(measueAxesData && dimensionAxesData) && <ChartBuilder
-                    xAxesLabel={measueAxesData}
-                    yAxesLabel={dimensionAxesData}
-                    chartRequestedData={{
-                        measures: ["Cost"],
-                        dimension: "Product"
-                    }}
-                />
-                }
-            </div>
+
         </div>
     );
 

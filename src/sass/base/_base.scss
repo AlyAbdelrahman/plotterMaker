@@ -1,0 +1,18 @@
+/* _-_-_- base/BASE -_-_-_ */
+@charset 'utf-8';
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background:linear-gradient(to bottom right, #5150a338 0%, #53dce3 100%);
+  background-size: 400% 400%;
+}
+
+

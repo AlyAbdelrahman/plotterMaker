@@ -1,10 +1,9 @@
 import ChartMaker from './containers/chartMaker/ChartMaker';
+import './sass/main.scss';
 
 function App() {
   return (
-      <div className="App" data-test='component-app'>
         <ChartMaker data-test='component-chart-maker'/>
-      </div>
   );
 }
 

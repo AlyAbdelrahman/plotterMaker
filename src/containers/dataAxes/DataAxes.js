@@ -1,27 +1,23 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-export default function DataAxes({droppableId, axesLabel, handleClearAxis}) {
+export default function DataAxes({ droppableId, axesLabel, handleClearAxis, header }) {
     return (
-        <div>
-            <Droppable droppableId={droppableId}>
-                {(provided, snapshot) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={{
-                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                            padding: 4,
-                            width: 250,
-                            minHeight: 100
-                        }}
-                    >
-                        { axesLabel.length > 0 ? axesLabel :  <p>Drop  items here</p> }
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-            <button onClick={()=>handleClearAxis(droppableId, axesLabel)}>Clear</button>
+        <div className='droppableAxesContainer'>
+            <div className='droppableAxesBox'>
+                <Droppable droppableId={droppableId}>
+                    {(provided, snapshot) => (
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className='droppableAxesArea'
+                        >
+                            {axesLabel.length > 0 ? <div className='draggableCategory--toDrop'>{axesLabel}</div> : <p>Drop  {header} here</p>}
+                        </div>
+                    )}
+                </Droppable>
+                {axesLabel.length > 0 && <button className='clearAxisBtn' onClick={() => handleClearAxis(droppableId, axesLabel)}>Clear</button>}
+            </div>
         </div>
     );
 }
