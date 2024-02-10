@@ -13,6 +13,7 @@ export default function DataAxes({ droppableId, axesLabel, handleClearAxis, head
                             className='droppableAxesArea'
                         >
                             {axesLabel.length > 0 ? <div className='draggableCategory--toDrop'>{axesLabel}</div> : <p>Drop  {header} here</p>}
+                           <div style={{display:'none'}}> {provided.placeholder} </div>
                         </div>
                     )}
                 </Droppable>
