@@ -4,11 +4,14 @@ import DataColumn from '../dataColumn/DataColumn';
 import DataAxes from '../dataAxes/DataAxes';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { sortList } from '../../utils/utils';
+import DragDropColumn from '../../components/dragDropColumn/DragDropColumn';
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
     const [dimensionColumns, setDimensionColumns] = useState([]);
     const [measureColumns, setMeasureColumns] = useState([]);
+    const [measueAxesData, setMeasureAxesData] = useState([]);
+    const [dimensionAxesData, setDimensionAxesData] = useState([]);
 
 
     useEffect(() => {
@@ -44,16 +47,56 @@ export default function ChartMaker() {
             setMeasureColumns(newSortedList);
         }
     }
+    const handleMeasureAxesOnDragEnd = () => {
+        console.log('>>>>>handleMeasureAxesOnDragEnd')
+    }
+
+    const handleDimensionAxesOnDragEnd = () => {
+        console.log('>>>>>handleDimensionAxesOnDragEnd')
+    }
     const handleDragEnd = (result) => {
         if (!result.destination) return; // If dropped outside the list
-        if (result.draggableId.startsWith('draggable-dimension') || result.draggableId.startsWith('draggable-measure')) return handleColumnDataOnDragEnd(result);
 
+        const { draggableId, destination, source } = result;
+
+        // Handle dragging within Dimension or Measure columns
+        if ((draggableId.startsWith('draggable-dimension') || draggableId.startsWith('draggable-measure')) &&
+            (destination.droppableId === 'droppable-dimension' || destination.droppableId === 'droppable-measure')) {
+            handleColumnDataOnDragEnd(result);
+            return;
+        }
+
+        // Handle dragging to Measure Axes
+        if (destination.droppableId.startsWith('doppable-measure-axes')) {
+            handleMeasureAxesOnDragEnd(result);
+            return;
+        }
+
+        // Handle dragging to Dimension Axes
+        if (source.droppableId.startsWith('doppable-dimension-axes')) {
+            handleDimensionAxesOnDragEnd(result);
+            return;
+        }
     };
+
 
     return (
         <div className="chartMakerContainer">
             <DragDropContext onDragEnd={handleDragEnd}>
-                <DataColumn orginalColumnDataList={orginalColumnData} dimensionColumns={dimensionColumns} measureColumns={measureColumns} />
+                <DataColumn
+                    title='Measure'
+                    droppableId="droppable-measure"
+                    draggableId="draggable-measure"
+                    columnData={measureColumns}
+                />
+            </DragDropContext>
+            <DragDropContext onDragEnd={handleDragEnd}>
+                <DataColumn
+                    title='Dimension'
+                    droppableId="droppable-dimension"
+                    draggableId="draggable-dimension"
+                    columnData={measureColumns}
+                />
             </DragDropContext>
         </div>
     );
