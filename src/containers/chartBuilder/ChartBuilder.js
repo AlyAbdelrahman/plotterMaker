@@ -40,7 +40,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
                 lineTension: 1,
         datasets: [
             {
-                label: 'measure',
+                label: 'Plotter',
                 data: chartBuilderDatasets,
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: ['rgba(255,0,0,1)'],
@@ -67,7 +67,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
               display: true,
               title: {
                 display: true,
-                text:'yAxesLabel',
+                text:yAxesLabel,
                 color: '#911',
                 font: {
                   family: 'Comic Sans MS',
@@ -82,7 +82,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
               display: true,
               title: {
                 display: true,
-                text: 'xAxesLabel',
+                text: xAxesLabel,
                 color: '#191',
                 font: {
                   family: 'Times',
