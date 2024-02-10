@@ -12,3 +12,10 @@ export const sortList = (sourceList, startIndex, endIndex) => {
     newList = newList.map((item, index) => ({ ...item, index })).sort((a, b) => a.index - b.index);
     return newList
 }
+
+export function extractAxesLable(text) {
+    const words = text.split('-');
+    // Get the last word from the array
+    const axesLabel = words[words.length - 1];
+    return axesLabel;
+}

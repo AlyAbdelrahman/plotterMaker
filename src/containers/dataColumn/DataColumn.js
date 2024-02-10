@@ -1,8 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import DragDropColumn from '../../components/dragDropColumn/DragDropColumn';
 import DataAxes from '../dataAxes/DataAxes';
 
-export default function DataColumn({ title, draggableId, droppableId, columnData }) {
+ const DataColumn = React.forwardRef(({ title, draggableId, droppableId, columnData, axisDroppableId, axesLabels }, axesContainerRef) => {
     return (
         <div>
             <DragDropColumn
@@ -11,8 +12,9 @@ export default function DataColumn({ title, draggableId, droppableId, columnData
                 draggableId={draggableId}
                 columnData={columnData}
             />
-            {/* {axesContainerRef && ReactDOM.createPortal(<DataAxes header={listName} axesData={getMatchedAxesData(listName)} handleDeleteMeasure={handleDeleteMeasure} />, axesContainerRef.current)} */}
+            {axesContainerRef.current && ReactDOM.createPortal(<DataAxes header={title} axesLabels={axesLabels} droppableId={axisDroppableId}/>, axesContainerRef.current)}
 
         </div>
     );
-}
+});
+export default DataColumn;
