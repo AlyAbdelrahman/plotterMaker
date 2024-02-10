@@ -5,6 +5,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { extractAxesLable, sortList } from '../../utils/utils';
 import Axes from '../axes/Axes';
 import ChartBuilder from '../chartBuilder/ChartBuilder';
+ import CHART from '../../utils/constants';
+
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
@@ -36,12 +38,12 @@ export default function ChartMaker() {
     }, []);
 
     const handleColumnDataOnDragEnd = (result) => {
-        const sourceList = result.draggableId.startsWith('draggable-dimension') ? dimensionColumns : measureColumns;
+        const sourceList = result.draggableId.startsWith(CHART.DIMENSION_DRAGGABLE_ID) ? dimensionColumns : measureColumns;
         const startIndex = result.source.index;
         const endIndex = result.destination.index;
         const newSortedList = sortList(sourceList, startIndex, endIndex);
 
-        if (result.draggableId.startsWith('draggable-dimension')) {
+        if (result.draggableId.startsWith(CHART.DIMENSION_DRAGGABLE_ID)) {
             setDimensionColumns(newSortedList);
         } else {
             setMeasureColumns(newSortedList);
@@ -72,22 +74,22 @@ export default function ChartMaker() {
 
         const { draggableId, destination } = result;
 
-        if ((draggableId.startsWith('draggable-dimension') && destination.droppableId === 'droppable-dimension') ||
-            (draggableId.startsWith('draggable-measure') && destination.droppableId === 'droppable-measure')) {
+        if ((draggableId.startsWith(CHART.DIMENSION_DRAGGABLE_ID) && destination.droppableId === CHART.DIMENSION_DROPPABLE_ID) ||
+            (draggableId.startsWith(CHART.MEASURE_DRAGGABLE_ID) && destination.droppableId === CHART.MEASURE_DROPPABLE_ID)) {
             handleColumnDataOnDragEnd(result);
         }
 
-        if (destination.droppableId.startsWith('doppable-measure-axes')) {
+        if (destination.droppableId.startsWith(CHART.MEASURE_AXES_DROPPABLE_ID)) {
             handleAxesOnDragEnd(result, measureColumns, setMeasureColumns, 'measure');
         }
 
-        if (destination.droppableId.startsWith('doppable-dimension-axes')) {
+        if (destination.droppableId.startsWith(CHART.DIMENSION_AXES_DROPPABLE_ID)) {
             handleAxesOnDragEnd(result, dimensionColumns, setDimensionColumns, 'dimension');
         }
     };
 
     const handleClearAxis = (droppableId) => {
-        if (droppableId.startsWith('doppable-measure-axes')) {
+        if (droppableId.startsWith(CHART.MEASURE_AXES_DROPPABLE_ID)) {
             const measureCols = orginalColumnData.filter(item => item.function === 'measure');
             setMeasureAxesData('');
             setMeasureColumns(measureCols);
@@ -103,24 +105,24 @@ export default function ChartMaker() {
             <div className='chartDataColumnContainer'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <DataColumn
-                        title='Measure'
-                        droppableId="droppable-measure"
-                        draggableId="draggable-measure"
+                        title={CHART.MEASURE_COLUMN_TITLE}
+                        droppableId={CHART.MEASURE_DROPPABLE_ID}
+                        draggableId={CHART.MEASURE_DRAGGABLE_ID}
                         columnData={measureColumns}
                         ref={measureAxesRef}
-                        axisDroppableId="doppable-measure-axes"
+                        axisDroppableId={CHART.MEASURE_AXES_DROPPABLE_ID}
                         axesLabel={measureAxesData}
-                        handleClearAxis={() => handleClearAxis('doppable-measure-axes')}
+                        handleClearAxis={() => handleClearAxis(CHART.MEASURE_AXES_DROPPABLE_ID)}
                     />
                     <DataColumn
-                        title='Dimension'
-                        droppableId="droppable-dimension"
-                        draggableId="draggable-dimension"
+                        title={CHART.DIMENSION_COLUMN_TITLE}
+                        droppableId={CHART.DIMENSION_DROPPABLE_ID}
+                        draggableId={CHART.DIMENSION_DRAGGABLE_ID}
                         columnData={dimensionColumns}
                         ref={dimensionAxesRef}
-                        axisDroppableId="doppable-dimension-axes"
+                        axisDroppableId={CHART.DIMENSION_AXES_DROPPABLE_ID}
                         axesLabel={dimensionAxesData}
-                        handleClearAxis={() => handleClearAxis('doppable-dimension-axes')}
+                        handleClearAxis={() => handleClearAxis(CHART.DIMENSION_AXES_DROPPABLE_ID)}
                     />
                 </DragDropContext>
             </div>

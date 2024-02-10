@@ -6,7 +6,7 @@ export default function DataAxes({ droppableId, axesLabel, handleClearAxis, head
         <div className='droppableAxesContainer'>
             <div className='droppableAxesBox'>
                 <Droppable droppableId={droppableId}>
-                    {(provided, snapshot) => (
+                    {(provided) => (
                         <div
                             ref={provided.innerRef}
                             {...provided.droppableProps}
