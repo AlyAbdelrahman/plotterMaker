@@ -14,7 +14,7 @@ export default function ChartMaker() {
     const dimensionAxesRef = useRef();
     const measureAxesRef = useRef();
 
-    const [measueAxesData, setMeasureAxesData] = useState([]);
+    const [measueAxesData, setMeasureAxesData] = useState('');
     const [dimensionAxesData, setDimensionAxesData] = useState([]);
 
 
@@ -25,7 +25,6 @@ export default function ChartMaker() {
         setDimensionColumns(dimensionCols);
         setMeasureColumns(measureCols);
     }, [orginalColumnData]);
-
 
 
     const fetchChartColumnData = () => {
@@ -69,16 +68,15 @@ export default function ChartMaker() {
         setDimensionAxesData(axesLabel);
         setDimensionColumns(filteredDimensionColumns);
     };
-    
-    
-    
+
+
+
     const handleDragEnd = (result) => {
 
         if (!result.destination) return; // If dropped outside the list
         // debugger
 
-        const { draggableId, destination, source } = result;
-        debugger
+        const { draggableId, destination } = result;
         // Handle dragging within Dimension or Measure columns
         if ((draggableId.startsWith('draggable-dimension') && destination.droppableId === 'droppable-dimension') ||
             (draggableId.startsWith('draggable-measure') && destination.droppableId === 'droppable-measure')) {
@@ -100,9 +98,21 @@ export default function ChartMaker() {
         }
     };
 
+    const handleClearAxis = (droppableId, axesLabel) => {
+        if (droppableId.startsWith('doppable-measure-axes')) {
+            const measureCols = orginalColumnData.filter(item => item.function === 'measure');
+            setMeasureAxesData('')
+            setMeasureColumns(measureCols);
+            return
+        }
+        const dimensionCols = orginalColumnData.filter(item => item.function === 'dimension');
+        setDimensionAxesData('')
+        setDimensionColumns(dimensionCols);
+        return;
 
+    }
     return (
-        <div className="chartMakerContainer" style={{ display: 'flex' }}>
+        <div className="chartMakerContainer" style={{ display: 'flex', justifyContent:'space-between'}}>
             <div className='chartDataColumnContainer'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <DataColumn
@@ -112,7 +122,8 @@ export default function ChartMaker() {
                         columnData={measureColumns}
                         ref={measureAxesRef}
                         axisDroppableId="doppable-measure-axes"
-                        axesLabels={measueAxesData}
+                        axesLabel={measueAxesData}
+                        handleClearAxis={handleClearAxis}
 
                     />
                 </DragDropContext>
@@ -124,7 +135,8 @@ export default function ChartMaker() {
                         columnData={dimensionColumns}
                         ref={dimensionAxesRef}
                         axisDroppableId="doppable-dimension-axes"
-                        axesLabels={dimensionAxesData}
+                        axesLabel={dimensionAxesData}
+                        handleClearAxis={handleClearAxis}
                     />
                 </DragDropContext>
             </div>

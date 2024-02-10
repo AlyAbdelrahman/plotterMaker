@@ -1,7 +1,7 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
-export default function DataAxes({droppableId, axesLabels}) {
+export default function DataAxes({droppableId, axesLabel, handleClearAxis}) {
     return (
         <div>
             <Droppable droppableId={droppableId}>
@@ -16,11 +16,12 @@ export default function DataAxes({droppableId, axesLabels}) {
                             minHeight: 100
                         }}
                     >
-                        { axesLabels ||  <p>Drop dimension items here</p> }
+                        { axesLabel.length > 0 ? axesLabel :  <p>Drop  items here</p> }
                         {provided.placeholder}
                     </div>
                 )}
             </Droppable>
+            <button onClick={()=>handleClearAxis(droppableId, axesLabel)}>Clear</button>
         </div>
     );
 }
