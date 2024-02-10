@@ -6,6 +6,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { extractAxesLable, sortList } from '../../utils/utils';
 import DragDropColumn from '../../components/dragDropColumn/DragDropColumn';
 import Axes from '../axes/Axes';
+import ChartBuilder from '../chartBuilder/ChartBuilder';
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
@@ -15,7 +16,7 @@ export default function ChartMaker() {
     const measureAxesRef = useRef();
 
     const [measueAxesData, setMeasureAxesData] = useState('');
-    const [dimensionAxesData, setDimensionAxesData] = useState([]);
+    const [dimensionAxesData, setDimensionAxesData] = useState('');
 
 
     useEffect(() => {
@@ -56,8 +57,6 @@ export default function ChartMaker() {
         // Update the state with the axes label and filtered dimension columns
         setMeasureAxesData(axesLabel);
         setMeasureColumns(filteredDimensionColumns);
-
-        console.log('>>>>>handleMeasureAxesOnDragEnd')
     }
 
     const handleDimensionAxesOnDragEnd = (result) => {
@@ -74,16 +73,14 @@ export default function ChartMaker() {
     const handleDragEnd = (result) => {
 
         if (!result.destination) return; // If dropped outside the list
-        // debugger
-
         const { draggableId, destination } = result;
+
         // Handle dragging within Dimension or Measure columns
         if ((draggableId.startsWith('draggable-dimension') && destination.droppableId === 'droppable-dimension') ||
             (draggableId.startsWith('draggable-measure') && destination.droppableId === 'droppable-measure')) {
             handleColumnDataOnDragEnd(result);
             return;
         }
-
 
         // Handle dragging to Measure Axes
         if (destination.droppableId.startsWith('doppable-measure-axes')) {
@@ -112,7 +109,8 @@ export default function ChartMaker() {
 
     }
     return (
-        <div className="chartMakerContainer" style={{ display: 'flex', justifyContent:'space-between'}}>
+        <div className="chartMakerContainer" >
+
             <div className='chartDataColumnContainer'>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <DataColumn
@@ -143,6 +141,17 @@ export default function ChartMaker() {
             <div className="axesContainer">
                 <Axes ref={measureAxesRef} />
                 <Axes ref={dimensionAxesRef} />
+            </div>
+            <div className='' style={{ width: '100%', }}>
+                {(measueAxesData && dimensionAxesData) && <ChartBuilder
+                    xAxesLabel={measueAxesData}
+                    yAxesLabel={dimensionAxesData}
+                    chartRequestedData={{
+                        measures: ["Cost"],
+                        dimension: "Product"
+                    }}
+                />
+                }
             </div>
         </div>
     );
