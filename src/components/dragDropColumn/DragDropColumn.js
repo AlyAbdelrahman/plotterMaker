@@ -5,13 +5,13 @@ export default function DragDropColumn({ droppableId, columnData, draggableId, t
     return (
         <div>
             <h4 className='categoryHeader'>{title}</h4>
-        <Droppable droppableId={droppableId} key={droppableId} data-test='droppable-item'>
+        <Droppable droppableId={droppableId} key={droppableId} data-testid='droppable-item'>
             {(provided) => (
                 <div>
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         {columnData.map((item, index) => (
-                            <div className='draggableCategory' data-test="dragable-item" key={item.name}>
-                                <Draggable key={item.name} draggableId={`${draggableId}-${item.name}`} index={index} >
+                            <div className='draggableCategory'   key={item.name}>
+                                <Draggable key={item.name} draggableId={`${draggableId}-${item.name}`} index={index} data-testid='draggable-item'>
                                     {(provided, snapshot) => (
                                         <div
                                             ref={provided.innerRef}
