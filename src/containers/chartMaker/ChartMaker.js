@@ -124,6 +124,8 @@ export default function ChartMaker() {
                         axesLabel={measureAxesData}
                         handleClearAxis={() => handleClearAxis(CHART.MEASURE_AXES_DROPPABLE_ID)}
                     />
+                </DragDropContext>
+                <DragDropContext onDragEnd={handleDragEnd}>
                     <DataColumn
                         title={CHART.DIMENSION_COLUMN_TITLE}
                         droppableId={CHART.DIMENSION_DROPPABLE_ID}
