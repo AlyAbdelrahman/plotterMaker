@@ -124,7 +124,7 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
     return (
         <>
             <div className="chart-box" style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '500px' }}>
-                {chartData && <Line options={options} data={chartData} />}
+                {chartData.labels && <Line options={options} data={chartData} />}
             </div>
         </>
     );
