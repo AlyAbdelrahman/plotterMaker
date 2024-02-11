@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from 'prop-types';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -129,5 +130,14 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
         </>
     );
 }
+
+ChartBuilder.propTypes = {
+    xAxesLabel: PropTypes.string.isRequired,
+    yAxesLabel: PropTypes.string.isRequired,
+    chartRequestedData: PropTypes.shape({
+        measures: PropTypes.arrayOf(PropTypes.string.isRequired),
+        dimension: PropTypes.string.isRequired
+    }).isRequired,
+};
 
 export default ChartBuilder;
