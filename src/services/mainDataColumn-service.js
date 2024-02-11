@@ -10,7 +10,7 @@ function getCoulmnData() {
     }
     const url = `https://plotter-task.herokuapp.com/columns`; // temp implmentaion
     return new Promise((resolve, reject) => {
-        resolve(columnsTestData);
+        resolve(columnsTestData)
     });
     // return fetch(url, requestOptions)
     // .then(utils.handleResponse);

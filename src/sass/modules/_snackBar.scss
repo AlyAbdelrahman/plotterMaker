@@ -1,17 +1,24 @@
-.snackBarContainer{
-    display: flex;
-    position: absolute;
-    width: 18rem;
-    height: 3rem;
-    color: white;
-    background: black;
-    right: 1rem;
-    justify-content: center;
-    align-items: center;
-    bottom: 1rem;
-    button{
-        background: transparent;
-        color: wheat;
-        margin-left: 1rem;
+.snackbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+
+    button {
+        background-color: rgb(43, 114, 173);
+        border: none;
+        color: #fff;
+        margin-left: 10px;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline; /* Add the hover effect */
+        }
     }
 }

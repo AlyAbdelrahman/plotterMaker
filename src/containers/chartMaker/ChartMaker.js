@@ -5,8 +5,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { extractAxesLable, sortList } from '../../utils/utils';
 import Axes from '../axes/Axes';
 import ChartBuilder from '../chartBuilder/ChartBuilder';
- import CHART from '../../utils/constants';
-
+import CHART from '../../utils/constants';
+import Snackbar from '../../components/snackbar/Snackbar';
 
 export default function ChartMaker() {
     const [orginalColumnData, setOrginalColumnData] = useState([]);
@@ -17,6 +17,8 @@ export default function ChartMaker() {
 
     const [measureAxesData, setMeasureAxesData] = useState('');
     const [dimensionAxesData, setDimensionAxesData] = useState('');
+    const [error, setError] = useState(false);
+    const [retryClicked, setRetryClicked] = useState(false);
 
     useEffect(() => {
         const dimensionCols = orginalColumnData.filter(item => item.function === 'dimension');
@@ -29,13 +31,18 @@ export default function ChartMaker() {
         return plotDataService.getCoulmnData()
             .then(data => {
                 setOrginalColumnData(data);
+                setRetryClicked(false);
+                setError(false);
             })
-            .catch((err) => console.error('Error fetching column data:', err));
+            .catch((err) => {
+                console.error('Error fetching column data:', err);
+                setError(true);
+            });
     };
 
     useEffect(() => {
         fetchChartColumnData();
-    }, []);
+    }, [retryClicked]);
 
     const handleColumnDataOnDragEnd = (result) => {
         const sourceList = result.draggableId.startsWith(CHART.DIMENSION_DRAGGABLE_ID) ? dimensionColumns : measureColumns;
@@ -55,12 +62,12 @@ export default function ChartMaker() {
         let newColumns = axisData.filter(column => column.name !== axesLabel);
 
         if (axisType === 'measure') {
-            if (measureAxesData){
+            if (measureAxesData) {
                 newColumns = [...newColumns, { name: measureAxesData, function: 'measure' }];
             }
             setMeasureAxesData(axesLabel);
         } else {
-            if (dimensionAxesData){
+            if (dimensionAxesData) {
                 newColumns = [...newColumns, { name: dimensionAxesData, function: 'dimension' }];
             }
             setDimensionAxesData(axesLabel);
@@ -100,6 +107,10 @@ export default function ChartMaker() {
         }
     };
 
+    const handleRetry = () => {
+        setRetryClicked(true);
+    };
+
     return (
         <div className="chartMakerContainer">
             <div className='chartDataColumnContainer'>
@@ -137,13 +148,26 @@ export default function ChartMaker() {
                             xAxesLabel={measureAxesData}
                             yAxesLabel={dimensionAxesData}
                             chartRequestedData={{
-                                measures: ["Cost"],
-                                dimension: "Product"
+                                measures: [measureAxesData], // we should change this to be measures:measureAxesData
+                                dimension: dimensionAxesData // we should change this to be measures:dimensionAxesData
                             }}
                         />
                     )}
                 </div>
             </div>
+            {error && (
+                <Snackbar
+                    open={true}
+                    autoHideDuration={4000}
+                    onClose={() => setError(false)}
+                    message="Error fetching data"
+                    action={
+                        <button color="secondary" size="small" onClick={handleRetry}>
+                            Retry
+                        </button>
+                    }
+                />
+            )}
         </div>
     );
 }
