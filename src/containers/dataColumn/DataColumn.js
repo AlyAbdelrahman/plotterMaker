@@ -31,7 +31,10 @@ DataColumn.propTypes = {
         })
     ).isRequired,
     axisDroppableId: PropTypes.string.isRequired,
-    axesLabel: PropTypes.string,
+    axesLabel: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string)
+    ]),
     handleClearAxis: PropTypes.func.isRequired
 };
 

@@ -15,7 +15,7 @@ export default function ChartMaker() {
     const measureAxesRef = useRef();
     const dimensionAxesRef = useRef();
 
-    const [measureAxesData, setMeasureAxesData] = useState('');
+    const [measureAxesData, setMeasureAxesData] = useState([]);
     const [dimensionAxesData, setDimensionAxesData] = useState('');
     const [error, setError] = useState(false);
     const [retryClicked, setRetryClicked] = useState(false);
@@ -62,10 +62,9 @@ export default function ChartMaker() {
         let newColumns = axisData.filter(column => column.name !== axesLabel);
 
         if (axisType === 'measure') {
-            if (measureAxesData) {
-                newColumns = [...newColumns, { name: measureAxesData, function: 'measure' }];
-            }
-            setMeasureAxesData(axesLabel);
+            const newMeasureAxesData = measureAxesData;
+                newMeasureAxesData.push(axesLabel);
+                setMeasureAxesData(newMeasureAxesData)
         } else {
             if (dimensionAxesData) {
                 newColumns = [...newColumns, { name: dimensionAxesData, function: 'dimension' }];
@@ -98,7 +97,7 @@ export default function ChartMaker() {
     const handleClearAxis = (droppableId) => {
         if (droppableId.startsWith(CHART.MEASURE_AXES_DROPPABLE_ID)) {
             const measureCols = orginalColumnData.filter(item => item.function === 'measure');
-            setMeasureAxesData('');
+            setMeasureAxesData([]);
             setMeasureColumns(measureCols);
         } else {
             const dimensionCols = orginalColumnData.filter(item => item.function === 'dimension');
@@ -148,11 +147,11 @@ export default function ChartMaker() {
                             xAxesLabel={measureAxesData}
                             yAxesLabel={dimensionAxesData}
                             chartRequestedData={{
-                                measures: [measureAxesData], 
+                                measures: measureAxesData, 
                                 dimension: dimensionAxesData 
                             }}
                         />
-                    )}
+                    )} 
                 </div>
             </div>
             {error && (

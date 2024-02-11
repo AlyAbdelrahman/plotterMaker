@@ -38,17 +38,17 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
         setIsLoading(true)
         plotDataService.getChartData(chartRequestedData)
             .then(response => {
+                const colors = ['rgba(255,0,0,1)', 'rgba(0,255,0,1)', 'rgba(0,0,255,1)'];
+                const datasets = response.data.slice(1).map((item,index) => ({
+                    label: item.name,
+                    data: item.values,
+                    borderColor: colors[index % colors.length],
+                    backgroundColor: colors[index % colors.length],
+                    lineTension: 1
+                }));
                 const data = {
                     labels: response.data[0].values,
-                    datasets: [
-                        {
-                            label: 'Plotter',
-                            data: response.data[1].values,
-                            borderColor: 'rgb(255, 99, 132)',
-                            backgroundColor: ['rgba(255,0,0,1)'],
-                            lineTension: 1,
-                        },
-                    ],
+                    datasets
                 };
                 setChartData(data)
                 setError(false);
