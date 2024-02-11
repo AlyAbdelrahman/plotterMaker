@@ -28,7 +28,6 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
     const [chartBuilderDatasets, setChartBuilderDatasets] = useState([]);
     useEffect(()=>{
         plotDataService.getChartData(chartRequestedData).then(response => {
-            console.log(response)
             setChartBuilerLabels(response[0].values)
             setChartBuilderDatasets(response[1].values)
          })

@@ -148,8 +148,8 @@ export default function ChartMaker() {
                             xAxesLabel={measureAxesData}
                             yAxesLabel={dimensionAxesData}
                             chartRequestedData={{
-                                measures: [measureAxesData], // we should change this to be measures:measureAxesData
-                                dimension: dimensionAxesData // we should change this to be measures:dimensionAxesData
+                                measures: [measureAxesData], 
+                                dimension: dimensionAxesData 
                             }}
                         />
                     )}
