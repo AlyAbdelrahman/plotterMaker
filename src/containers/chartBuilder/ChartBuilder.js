@@ -35,6 +35,8 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
 
 
     useEffect(() => {
+        if (chartRequestedData.dimension.length === 0 || chartRequestedData.measures.length === 0 ) return
+        debugger
         setIsLoading(true)
         plotDataService.getChartData(chartRequestedData)
             .then(response => {

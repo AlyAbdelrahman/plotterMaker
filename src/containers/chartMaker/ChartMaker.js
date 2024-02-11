@@ -142,7 +142,7 @@ export default function ChartMaker() {
                     <Axes ref={dimensionAxesRef} />
                 </div>
                 <div style={{ width: '100%' }}>
-                    {(measureAxesData && dimensionAxesData) && (
+                    {(measureAxesData.length !== 0 && dimensionAxesData.length !== 0) && (
                         <ChartBuilder
                             xAxesLabel={measureAxesData}
                             yAxesLabel={dimensionAxesData}
