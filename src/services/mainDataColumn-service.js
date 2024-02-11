@@ -1,5 +1,4 @@
 import authHeader from '../helpers/auth-header';
-import { columnsTestData, dimensionMeasureColumnsDataValues } from '../utils/testData';
 import utils from './utils'
 
 // Get all Dragable Coulmn Data list
@@ -8,12 +7,16 @@ function getCoulmnData() {
         method: 'GET',
         headers: authHeader()
     }
-    const url = `https://plotter-task.herokuapp.com/columns`; // temp implmentaion
-    return new Promise((resolve, reject) => {
-        resolve(columnsTestData)
-    });
-    // return fetch(url, requestOptions)
-    // .then(utils.handleResponse);
+    // CORS proxy URL
+    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const url = `https://plotter-task-8019e13a60ac.herokuapp.com/columns`; // temp implementation
+    
+    // Append the CORS proxy URL before your API URL
+    const fullUrl = proxyUrl + url;
+
+    // Make a request to the CORS proxy
+    return fetch(fullUrl, requestOptions)
+        .then(utils.handleResponse);
 }
 
 function getChartData(chartAxesObj) {
@@ -22,12 +25,9 @@ function getChartData(chartAxesObj) {
         headers: authHeader(),
         body: JSON.stringify(chartAxesObj)
     }
-    const url = `https://plotter-task.herokuapp.com/data`; //temp implmentaion
-    return new Promise((resolve, reject) => {
-        resolve(dimensionMeasureColumnsDataValues);
-    });
-    // return fetch(url, requestOptions)
-    // .then(utils.handleResponse);
+    const url = `https://cors-anywhere.herokuapp.com/https://plotter-task-8019e13a60ac.herokuapp.com/data`; //temp implmentaion
+    return fetch(url, requestOptions)
+    .then(utils.handleResponse);
 }
 const plotDataService = {
     getCoulmnData,

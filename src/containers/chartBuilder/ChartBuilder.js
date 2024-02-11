@@ -25,38 +25,41 @@ ChartJS.register(
 
 
 const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
-    const [chartBuilderLabels, setChartBuilerLabels] = useState([]);
-    const [chartBuilderDatasets, setChartBuilderDatasets] = useState([]);
+    const [chartData, setChartData] = useState([]);
+
 
     const [error, setError] = useState(false);
     const [retryClicked, setRetryClicked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(()=>{
+
+    useEffect(() => {
+        setIsLoading(true)
         plotDataService.getChartData(chartRequestedData)
             .then(response => {
-                setChartBuilerLabels(response[0].values);
-                setChartBuilderDatasets(response[1].values);
+                const data = {
+                    labels: response.data[0].values,
+                    datasets: [
+                        {
+                            label: 'Plotter',
+                            data: response.data[1].values,
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: ['rgba(255,0,0,1)'],
+                            lineTension: 1,
+                        },
+                    ],
+                };
+                setChartData(data)
                 setError(false);
                 setRetryClicked(false);
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.error('Error fetching column data:', err);
                 setError(true);
-            });
+            }).finally(() => setIsLoading(false));
     }, [chartRequestedData, retryClicked]);
-   
-    const data = {
-        labels: chartBuilderLabels,
-        datasets: [
-            {
-                label: 'Plotter',
-                data: chartBuilderDatasets,
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: ['rgba(255,0,0,1)'],
-                lineTension: 1,
-            },
-        ],
-    };
+
+
 
     const options = {
         responsive: true,
@@ -106,23 +109,23 @@ const ChartBuilder = ({ xAxesLabel, yAxesLabel, chartRequestedData }) => {
     const handleRetry = () => {
         setRetryClicked(true);
     };
-
+    if (isLoading) return <div style={{ display: 'flex', justifyContent: 'center' }}><h1>loading Chart</h1></div>
+    if (error) return <Snackbar
+        open={true}
+        autoHideDuration={4000}
+        onClose={() => setError(false)}
+        message="Error fetching data"
+        action={
+            <button color="secondary" size="small" onClick={handleRetry}>
+                Retry
+            </button>
+        }
+    />
     return (
         <>
-            
-                <div className="chart-box" style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '500px' }}>
-                   {error ? <Snackbar
-                    open={true}
-                    autoHideDuration={4000}
-                    onClose={() => setError(false)}
-                    message="Error fetching data"
-                    action={
-                        <button color="secondary" size="small" onClick={handleRetry}>
-                            Retry
-                        </button>
-                    }
-                /> : <Line options={options} data={data} />}
-                </div>
+            <div className="chart-box" style={{ display: 'flex', justifyContent: 'center', width: '100%', height: '500px' }}>
+                {chartData && <Line options={options} data={chartData} />}
+            </div>
         </>
     );
 }

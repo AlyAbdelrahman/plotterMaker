@@ -30,7 +30,7 @@ export default function ChartMaker() {
     const fetchChartColumnData = () => {
         return plotDataService.getCoulmnData()
             .then(data => {
-                setOrginalColumnData(data);
+                setOrginalColumnData(data.columns);
                 setRetryClicked(false);
                 setError(false);
             })
